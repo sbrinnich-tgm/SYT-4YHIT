@@ -5,22 +5,15 @@ import javax.jms.MessageListener;
 
 public class Chat implements MessageListener{
 	
-	private String messages;
+	private MOMConnection con;
 	
-	private User user
-	
-	public Chat(User user) {
-		this.user = user;
+	public Chat(MOMConnection con) {
+		this.con = con;
 	}
 
 	@Override
-	public void onMessage(Message arg0) {
-		messages += user.
-	}
-
-	public String getMessages() {
-		// TODO Auto-generated method stub
-		return null;
+	public void onMessage(Message msg) {
+		User.printMessage(msg);
 	}
 
 }
