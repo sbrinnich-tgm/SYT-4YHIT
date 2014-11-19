@@ -36,7 +36,7 @@ public class User extends Thread {
 		User.username = username;
 		userip = getIp();
 		MOMConnection conChat = new MOMConnection(momIP, chatRoom,true);
-		MOMConnection conMail = new MOMConnection(momIP, "0.0.0.0",false);
+		MOMConnection conMail = new MOMConnection(momIP, false);
 		chat = new Chat(conChat);
 		mail = new Mail(conMail);
 		this.start();

@@ -46,6 +46,17 @@ public class MOMConnection {
 		MOMConnection.subject = subject;
 		this.createConnection();
 	}
+	
+	/**
+	 * Erstellt ein MOM Objekt mit den Uebergebenen Parametern
+	 * 
+	 * @param url IP des MOM
+	 * @param subject gewueschtest Topic/Queue
+	 * @param isTopic gibt an ob die Connection eine Queue oder ein Topic ist
+	 */
+	public MOMConnection(String url, boolean isTopic){
+		MOMConnection.url = "failover://tcp://"+url+":61616";
+	}
 
 	/**
 	 * Erstellt eine Verbindung zum MOM
@@ -125,6 +136,7 @@ public class MOMConnection {
 	 */
 	public void setSubject(String newSubject){
 		MOMConnection.subject = newSubject;
+		this.createConnection();
 	}
 	
 }
