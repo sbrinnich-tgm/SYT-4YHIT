@@ -25,6 +25,7 @@ public class MOMConnection {
 	private static String password = ActiveMQConnection.DEFAULT_PASSWORD;
 	private static String url;
 	private static String subject;
+	private static boolean isTopic;
 	
 	private Session session;
 	private Connection connection;
@@ -38,8 +39,9 @@ public class MOMConnection {
 	 * 
 	 * @param url IP des MOM
 	 * @param subject gewueschtest Topic/Queue
+	 * @param isTopic gibt an ob die Connection eine Queue oder ein Topic ist
 	 */
-	public MOMConnection(String url, String subject){
+	public MOMConnection(String url, String subject, boolean isTopic){
 		MOMConnection.url = "failover://tcp://"+url+":61616";
 		MOMConnection.subject = subject;
 		this.createConnection();
@@ -61,7 +63,12 @@ public class MOMConnection {
 			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 			
 			// Auf Topic zugreifen
-			destination = session.createTopic(subject);
+			if(isTopic==true){
+				destination = session.createTopic(subject);
+			}else{
+				destination = session.createQueue(subject);
+			}
+			
 
 			// Sender und Empfaenger erstellen
 			consumer = session.createConsumer(destination);

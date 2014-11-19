@@ -33,8 +33,10 @@ public class User extends Thread {
 	public User(String momIP, String username, String chatRoom) {
 		super("User");
 		this.username = username;
-		MOMConnection conChat = new MOMConnection(momIP, chatRoom);
+		MOMConnection conChat = new MOMConnection(momIP, chatRoom,true);
+		MOMConnection conMail = new MOMConnection(momIP, getIp(),false);
 		chat = new Chat(conChat);
+		mail = new Mail(conMail);
 		this.start();
 	}
 	
@@ -88,6 +90,8 @@ public class User extends Thread {
 				chat.sendMessage(formatMessage(msg));
 			}
 		}
+		chat.getConnection().closeConnection();
+		mail.getConnection().closeConnection();
 	}
 	
 	/**
