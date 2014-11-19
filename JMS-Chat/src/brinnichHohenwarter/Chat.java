@@ -58,7 +58,7 @@ public class Chat implements MessageListener{
 		try {
 			TextMessage msg = con.getTopicSession().createTextMessage(text);
 			con.getProducer().send(msg);
-		} catch (JMSException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

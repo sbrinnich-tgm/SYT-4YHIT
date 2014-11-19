@@ -90,8 +90,7 @@ public class MOMConnection {
 				publisher = tsession.createPublisher(topic);
 				subscriber = tsession.createSubscriber(topic);
 
-			} catch (JMSException e) {
-				// TODO Auto-generated catch block
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}else{

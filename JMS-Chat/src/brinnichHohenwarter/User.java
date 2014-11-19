@@ -83,7 +83,7 @@ public class User extends Thread {
 			msg = readLine(bufferRead);
 			if(msg.equals("EXIT")){
 				System.out.println("Chatroom wird verlassen...");
-				System.exit(0);
+				exitChat();
 			}else if(msg.equalsIgnoreCase("MAILBOX")){
 				mail.readMails();
 			}else if(msg.contains("MAIL") || msg.contains("mail")){
@@ -128,6 +128,12 @@ public class User extends Thread {
 	 */
 	public static void printMessage(String msg){
 		System.out.println(msg);
+	}
+	
+	public void exitChat(){
+		chat.getConnection().closeConnection();
+		mail.getConnection().closeConnection();
+		System.exit(0);
 	}
 
 }
