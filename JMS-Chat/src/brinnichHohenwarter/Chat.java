@@ -12,7 +12,7 @@ import javax.jms.TextMessage;
  * @author niklas hohenwarter
  * @author selina brinnich
  */
-public class Chat implements MessageListener{
+public class Chat extends Thread{
 	
 	private MOMConnection con;
 	
@@ -23,23 +23,23 @@ public class Chat implements MessageListener{
 	 */
 	public Chat(MOMConnection con) {
 		this.con = con;
-		this.init();
+		this.start();
 	}
 	
 	/**
 	 * Initialisiert den MessageListener
-	 */
+	 *//**
 	private void init(){
 		try {
 			con.getConsumer().setMessageListener(this);
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	/**
 	 * Gibt beim Erhalt einer Nachricht diese auf der Konsole aus
-	 */
+	 *//**
 	@Override
 	public void onMessage(Message msg) {
 		TextMessage text = (TextMessage)msg;
@@ -48,7 +48,7 @@ public class Chat implements MessageListener{
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	/**
 	 * Sendet eine Nachricht an den Chatroom
@@ -62,13 +62,26 @@ public class Chat implements MessageListener{
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
-	 * Gibt die MOM Connection zurÃ¼ck
+	 * Gibt die MOM Connection zurück
 	 * @return MOM Connection
 	 */
-	public MOMConnection getConnection() {
-		return con;
-	}
+	 public MOMConnection getConnection() {
+	 return con;
+	 }
+	 
+	 @Override
+	 public void run(){
+		 while(true){
+			 try {
+				TextMessage msg = (TextMessage) con.getConsumer().receive();
+				sendMessage(msg.getText());
+			} catch (JMSException e) {
+				e.printStackTrace();
+			}
+			 
+		 }
+	 }
 
 }

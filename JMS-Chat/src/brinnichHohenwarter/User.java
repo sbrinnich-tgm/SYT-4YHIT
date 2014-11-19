@@ -84,9 +84,9 @@ public class User extends Thread {
 			if(msg.equals("EXIT")){
 				System.out.println("Chatroom wird verlassen...");
 				System.exit(0);
-			}else if(msg.equals("MAILBOX")){
+			}else if(msg.equalsIgnoreCase("MAILBOX")){
 				mail.readMails();
-			}else if(msg.contains("MAIL")){
+			}else if(msg.contains("MAIL") || msg.contains("mail")){
 				String[] s = msg.split(" ");
 				mail.sendMail(s[2], s[1]);
 			}else{
