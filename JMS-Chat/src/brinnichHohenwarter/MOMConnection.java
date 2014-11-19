@@ -168,8 +168,6 @@ public class MOMConnection {
 		return qsession;
 	}
 	
-	//Tes
-	
 	/**
 	 * Setzt das Subject (Name des Topics/der Queue)
 	 * @param newSubject der Name des neuen Topics/der neuen Queue
