@@ -34,7 +34,9 @@ public class User extends Thread {
 		super("User");
 		this.username = username;
 		MOMConnection conChat = new MOMConnection(momIP, chatRoom);
+		MOMConnection conMail = new MOMConnection(momIP, getIp());
 		chat = new Chat(conChat);
+		mail = new Mail(conMail);
 		this.start();
 	}
 	
