@@ -13,11 +13,6 @@ public class User extends Thread {
 		MOMConnection conChat = new MOMConnection(momIP, chatRoom);
 		Chat chat = new Chat(conChat);
 	}
-	public static void main(String[] args) {
-		momIP = args[0];
-		username = args[1];
-		chatRoom = args[2];
-	}
 	
 	@Override
 	public void run(){
