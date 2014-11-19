@@ -124,7 +124,7 @@ public class MOMConnection {
 	 * @param newSubject der Name des neuen Topics/der neuen Queue
 	 */
 	public void setSubject(String newSubject){
-		this.subject = newSubject;
+		MOMConnection.subject = newSubject;
 	}
 	
 }

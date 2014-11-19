@@ -33,7 +33,7 @@ public class User extends Thread {
 	 */
 	public User(String momIP, String username, String chatRoom) {
 		super("User");
-		username = username;
+		User.username = username;
 		userip = getIp();
 		MOMConnection conChat = new MOMConnection(momIP, chatRoom,true);
 		MOMConnection conMail = new MOMConnection(momIP, "0.0.0.0",false);
