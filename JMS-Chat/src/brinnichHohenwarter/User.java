@@ -21,6 +21,8 @@ public class User extends Thread {
 	private String username;
 	
 	private Chat chat;
+
+	private Mail mail;
 	
 	/**
 	 * Erstellt einen User nach den übergebenen Parametern
@@ -29,6 +31,7 @@ public class User extends Thread {
 	 * @param chatRoom Name des/der Topics/Queue
 	 */
 	public User(String momIP, String username, String chatRoom) {
+		super("User");
 		this.username = username;
 		MOMConnection conChat = new MOMConnection(momIP, chatRoom);
 		chat = new Chat(conChat);
@@ -76,6 +79,10 @@ public class User extends Thread {
 			if(msg.equals("EXIT")){
 				System.out.println("Chatroom wird verlassen...");
 				System.exit(0);
+			}else if(msg.equals("MAIL")){
+				mail.sendMail();
+			}else if(msg.equals("MAILBOX")){
+				mail.readMails();
 			}else{
 				chat.sendMessage(formatMessage(msg));
 			}
