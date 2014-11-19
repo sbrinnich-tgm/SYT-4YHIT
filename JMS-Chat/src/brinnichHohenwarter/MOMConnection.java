@@ -23,7 +23,7 @@ public class MOMConnection {
 	
 	private static String user = ActiveMQConnection.DEFAULT_USER;
 	private static String password = ActiveMQConnection.DEFAULT_PASSWORD;
-	private static String url; //"failover://tcp://192.168.1.9:61616"
+	private static String url;
 	private static String subject;
 	
 	private Session session;
@@ -34,10 +34,10 @@ public class MOMConnection {
 	private MessageProducer producer;
 	
 	/**
-	 * Erstellt ein MOM Objekt mit den übergebenen Parametern
+	 * Erstellt ein MOM Objekt mit den Uebergebenen Parametern
 	 * 
 	 * @param url IP des MOM
-	 * @param subject gewüschtest Topic/Queue
+	 * @param subject gewueschtest Topic/Queue
 	 */
 	public MOMConnection(String url, String subject){
 		MOMConnection.url = "failover://tcp://"+url+":61616";
@@ -75,7 +75,7 @@ public class MOMConnection {
 	}
 
 	/**
-	 * Schließt die Verbindung und alle dazugehörigen Streams
+	 * Schliesst die Verbindung und alle dazugehoerigen Streams
 	 */
 	public void closeConnection() {
 		try {

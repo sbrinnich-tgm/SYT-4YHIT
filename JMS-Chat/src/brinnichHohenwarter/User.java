@@ -10,7 +10,7 @@ import java.net.SocketException;
 import java.util.Enumeration;
 
 /**
- * Repräsentiert den User eines Chats
+ * Repraesentiert den User eines Chats
  * 
  * @author niklas hohenwarter
  * @author selina brinnich
@@ -25,7 +25,7 @@ public class User extends Thread {
 	private Mail mail;
 	
 	/**
-	 * Erstellt einen User nach den übergebenen Parametern
+	 * Erstellt einen User nach den Uebergebenen Parametern
 	 * @param momIP IP des MessageBrokers
 	 * @param username Benutzername im Chat
 	 * @param chatRoom Name des/der Topics/Queue
@@ -68,7 +68,7 @@ public class User extends Thread {
 	}
 	
 	/**
-	 * Erledigt ständig anfallende Arbeiten
+	 * Erledigt staendig anfallende Arbeiten
 	 */
 	@Override
 	public void run(){

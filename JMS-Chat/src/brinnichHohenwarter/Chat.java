@@ -7,7 +7,7 @@ import javax.jms.TextMessage;
 
 /**
  * Implementiert die Funktionen eines Chatrooms
- * User können Nachrichten versenden und empfangen
+ * User koennen Nachrichten versenden und empfangen
  * 
  * @author niklas hohenwarter
  * @author selina brinnich
@@ -17,7 +17,7 @@ public class Chat implements MessageListener{
 	private MOMConnection con;
 	
 	/**
-	 * Initialisierung für den Chat
+	 * Initialisierung fuer den Chat
 	 * 
 	 * @param con Verbindung zum MOM
 	 */
