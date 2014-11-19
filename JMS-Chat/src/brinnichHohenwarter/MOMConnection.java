@@ -80,7 +80,7 @@ public class MOMConnection {
 					user, password, url);
 			try {
 				tconnection = connectionFactory.createTopicConnection();
-				tconnection.setClientID(User.username + User.userip);
+				tconnection.setClientID(User.username + User.userip+"CHAT");
 				tconnection.start();
 
 				tsession = tconnection.createTopicSession(false,
@@ -100,7 +100,7 @@ public class MOMConnection {
 				ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
 						user, password, url);
 				qconnection = connectionFactory.createConnection();
-				qconnection.setClientID(User.username+User.userip);
+				qconnection.setClientID(User.username+User.userip+"MAIL");
 				qconnection.start();
 
 				
