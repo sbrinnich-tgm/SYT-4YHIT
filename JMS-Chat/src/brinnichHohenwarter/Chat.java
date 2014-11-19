@@ -5,15 +5,30 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
+/**
+ * Implementiert die Funktionen eines Chatrooms
+ * User können Nachrichten versenden und empfangen
+ * 
+ * @author niklas hohenwarter
+ * @author selina brinnich
+ */
 public class Chat implements MessageListener{
 	
 	private MOMConnection con;
 	
+	/**
+	 * Initialisierung für den Chat
+	 * 
+	 * @param con Verbindung zum MOM
+	 */
 	public Chat(MOMConnection con) {
 		this.con = con;
 		this.init();
 	}
 	
+	/**
+	 * Initialisiert den MessageListener
+	 */
 	private void init(){
 		try {
 			con.getConsumer().setMessageListener(this);
@@ -22,6 +37,9 @@ public class Chat implements MessageListener{
 		}
 	}
 
+	/**
+	 * Gibt beim Erhalt einer Nachricht diese auf der Konsole aus
+	 */
 	@Override
 	public void onMessage(Message msg) {
 		TextMessage text = (TextMessage)msg;
@@ -32,6 +50,10 @@ public class Chat implements MessageListener{
 		}
 	}
 	
+	/**
+	 * Sendet eine Nachricht an den Chatroom
+	 * @param text Nachrichtentext
+	 */
 	public void sendMessage(String text){
 		try {
 			TextMessage msg = con.getSession().createTextMessage(text);

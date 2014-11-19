@@ -9,19 +9,30 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
+/**
+ * Repräsentiert den User eines Chats
+ * 
+ * @author niklas hohenwarter
+ * @author selina brinnich
+ * @version 2014-11-19
+ */
 public class User extends Thread {
 	
-	private static String username;
-	private static String momIP;
-	private static String chatRoom;
+	private String username;
 	
 	private Chat chat;
-	private MOMConnection con;
+
+	private Mail mail;
 	
+	/**
+	 * Erstellt einen User nach den übergebenen Parametern
+	 * @param momIP IP des MessageBrokers
+	 * @param username Benutzername im Chat
+	 * @param chatRoom Name des/der Topics/Queue
+	 */
 	public User(String momIP, String username, String chatRoom) {
-		this.momIP = momIP;
+		super("User");
 		this.username = username;
-		this.chatRoom = chatRoom;
 		MOMConnection conChat = new MOMConnection(momIP, chatRoom);
 		chat = new Chat(conChat);
 		this.start();
@@ -56,6 +67,9 @@ public class User extends Thread {
 	    return ipAddress;
 	}
 	
+	/**
+	 * Erledigt ständig anfallende Arbeiten
+	 */
 	@Override
 	public void run(){
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
@@ -66,6 +80,10 @@ public class User extends Thread {
 			if(msg.equals("EXIT")){
 				System.out.println("Chatroom wird verlassen...");
 				System.exit(0);
+			}else if(msg.equals("MAIL")){
+				mail.sendMail();
+			}else if(msg.equals("MAILBOX")){
+				mail.readMails();
 			}else{
 				chat.sendMessage(formatMessage(msg));
 			}
