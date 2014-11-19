@@ -9,6 +9,11 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.Topic;
+import javax.jms.TopicConnection;
+import javax.jms.TopicConnectionFactory;
+import javax.jms.TopicPublisher;
+import javax.jms.TopicSession;
+import javax.jms.TopicSubscriber;
 
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -28,12 +33,12 @@ public class MOMConnection {
 	private static String subject;
 	private static boolean isTopic;
 	
-	private Session session;
-	private Connection connection;
+	private TopicSession session;
+	private TopicConnection connection;
 	private Destination destination;
 	
-	private MessageConsumer consumer;
-	private MessageProducer producer;
+	private TopicSubscriber consumer;
+	private TopicPublisher producer;
 	
 	/**
 	 * Erstellt ein MOM Objekt mit den Uebergebenen Parametern
@@ -63,7 +68,7 @@ public class MOMConnection {
 	 * Erstellt eine Verbindung zum MOM
 	 */
 	public void createConnection() {
-
+		/**
 		try {
 			// Verbindung herstellen
 			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
@@ -72,6 +77,7 @@ public class MOMConnection {
 			connection.setClientID(User.username+User.userip);
 			connection.start();
 
+			
 			// Session erstellen
 			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 			
@@ -93,7 +99,25 @@ public class MOMConnection {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+*/
+		TopicConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
+				user, password, url);
+		try {
+			connection = connectionFactory.createTopicConnection();
+			connection.setClientID(User.username+User.userip);
+			connection.start();
+		
+			session = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
+			
+			Topic topic = session.createTopic(subject);
+			producer = session.createPublisher(topic);
+			consumer = session.createSubscriber(topic);
+			
+		} catch (JMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
