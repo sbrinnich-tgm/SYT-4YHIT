@@ -24,7 +24,12 @@ public class Mail{
 
 	public void readMails() {
 		con.setSubject(User.userip);
-		User.printMessage(getMessages());
+		String s = getMessages();
+		if(s.equals("")){
+			System.out.println("Keine neuen Mails.");
+		}else{
+			User.printMessage(s);
+		}
 	}
 
 	/**

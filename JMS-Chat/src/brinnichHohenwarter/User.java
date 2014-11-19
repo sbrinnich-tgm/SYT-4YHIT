@@ -78,6 +78,7 @@ public class User extends Thread {
 	public void run(){
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		String msg;
+		System.out.println("Chatroom wird betreten...");
 		while(true){
 			msg = readLine(bufferRead);
 			if(msg.equals("EXIT")){
