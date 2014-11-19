@@ -15,7 +15,7 @@ public class Mail{
 		TextMessage msg;
 		try {
 			con.setSubject(dest);
-			msg = con.getSession().createTextMessage("Mail from " + User.username + "[" + User.userip + "]: " + text);
+			msg = con.getQueueSession().createTextMessage("Mail from " + User.username + "[" + User.userip + "]: " + text);
 			con.getProducer().send(msg);
 			con.closeConnection();
 		} catch (JMSException e) {

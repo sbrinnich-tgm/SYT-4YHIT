@@ -33,12 +33,18 @@ public class MOMConnection {
 	private static String subject;
 	private static boolean isTopic;
 	
-	private TopicSession session;
-	private TopicConnection connection;
+	private TopicSession tsession;
+	private TopicConnection tconnection;
+	
+	private Session qsession;
+	private Connection qconnection;
 	private Destination destination;
 	
-	private TopicSubscriber consumer;
-	private TopicPublisher producer;
+	private TopicSubscriber subscriber;
+	private TopicPublisher publisher;
+	
+	private MessageProducer producer;
+	private MessageConsumer consumer;
 	
 	/**
 	 * Erstellt ein MOM Objekt mit den Uebergebenen Parametern
@@ -68,54 +74,47 @@ public class MOMConnection {
 	 * Erstellt eine Verbindung zum MOM
 	 */
 	public void createConnection() {
-		/**
-		try {
-			// Verbindung herstellen
-			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-					user, password, url);
-			connection = connectionFactory.createConnection();
-			connection.setClientID(User.username+User.userip);
-			connection.start();
-
-			
-			// Session erstellen
-			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-			
-			// Auf Topic zugreifen
-			if(isTopic==true){
-				Topic topic = session.createTopic(subject);
-				// Sender und Empfaenger erstellen
-				consumer = session.createDurableSubscriber(topic, "SUB"+User.username+User.userip);
-				producer = session.createProducer(topic);
-			}else{
-				destination = session.createQueue(subject);
-				consumer = session.createConsumer(destination);
-				producer = session.createProducer(destination);
-			}
-			
-
-			
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-*/
-		TopicConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-				user, password, url);
-		try {
-			connection = connectionFactory.createTopicConnection();
-			connection.setClientID(User.username+User.userip);
-			connection.start();
 		
-			session = connection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
-			
-			Topic topic = session.createTopic(subject);
-			producer = session.createPublisher(topic);
-			consumer = session.createSubscriber(topic);
-			
-		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (isTopic == true) {
+			TopicConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
+					user, password, url);
+			try {
+				tconnection = connectionFactory.createTopicConnection();
+				tconnection.setClientID(User.username + User.userip);
+				tconnection.start();
+
+				tsession = tconnection.createTopicSession(false,
+						Session.AUTO_ACKNOWLEDGE);
+
+				Topic topic = tsession.createTopic(subject);
+				publisher = tsession.createPublisher(topic);
+				subscriber = tsession.createSubscriber(topic);
+
+			} catch (JMSException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else{
+			try {
+				// Verbindung herstellen
+				ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
+						user, password, url);
+				qconnection = connectionFactory.createConnection();
+				qconnection.setClientID(User.username+User.userip);
+				qconnection.start();
+
+				
+				// Session erstellen
+				qsession = qconnection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+				
+				// Auf Queue zugreifen
+				destination = qsession.createQueue(subject);
+				consumer = qsession.createConsumer(destination);
+				producer = qsession.createProducer(destination);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -125,10 +124,13 @@ public class MOMConnection {
 	 */
 	public void closeConnection() {
 		try {
-			connection.stop();
+			qconnection.stop();
+			tconnection.stop();
 			consumer.close();
-			session.close();
-			connection.close();
+			qsession.close();
+			tsession.close();
+			qconnection.close();
+			tconnection.close();
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
@@ -151,11 +153,19 @@ public class MOMConnection {
 	}
 
 	/**
-	 * Gibt ein Nachrichten-Session Objekt zurueck
-	 * @return ein Nachrichten-Session Objekt, das auf eine bestimmte Connection registriert ist
+	 * Gibt ein Topic-Session Objekt zurueck
+	 * @return ein Topic-Session Objekt, das auf ein bestimmtes Topic registriert ist
 	 */
-	public Session getSession() {
-		return session;
+	public Session getTopicSession() {
+		return tsession;
+	}
+	
+	/**
+	 * Gibt ein Queue-Session Objekt zurueck
+	 * @return ein Queue-Session Objekt, das auf eine bestimmte Connection registriert ist
+	 */
+	public Session getQueueSession() {
+		return qsession;
 	}
 	
 	/**
