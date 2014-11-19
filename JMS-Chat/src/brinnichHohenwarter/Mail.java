@@ -16,6 +16,12 @@ public class Mail {
 		
 	}
 
-	
+	/**
+	 * Gibt die MOM Connection zurück
+	 * @return MOM Connection
+	 */
+	public MOMConnection getConnection() {
+		return con;
+	}
 	
 }
