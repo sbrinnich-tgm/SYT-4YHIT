@@ -5,38 +5,26 @@ import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
-import javax.jms.Message;
 import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
-/**
- * Chat mittels MOM
- * Ein Chat welcher mittels Apache ActiveMQ Nachrichten verschicken und empfangen kann.
- * Es gibt Chatrooms und man kann einander private Nachrichten schicken
- * 
- * @author niklas hohenwarter
- * @author selina brinnich
- * @version 2014-11-19
- */
-public class Chat extends Thread implements MessageListener {
-
+public class MOMConnection {
+	
 	private static String user = ActiveMQConnection.DEFAULT_USER;
 	private static String password = ActiveMQConnection.DEFAULT_PASSWORD;
-	private static String url = ActiveMQConnection.DEFAULT_BROKER_URL;
-	private static String subject = "BrinnichHohenwarterChat";
+	private static String url; //"failover://tcp://192.168.1.9:61616"
+	private static String subject;
 	
 	private Session session;
 	private Connection connection;
 	private Destination destination;
 	
-	private MessageConsumer consumer;
-	private MessageProducer producer;
-	
+	public MessageConsumer consumer;
+	public MessageProducer producer;
 
 	/**
 	 * 
@@ -56,9 +44,8 @@ public class Chat extends Thread implements MessageListener {
 			// Auf Topic zugreifen
 			destination = session.createTopic(subject);
 
-			// Sender und Empfänger erstellen
+			// Sender und Empfaenger erstellen
 			consumer = session.createConsumer(destination);
-			consumer.setMessageListener(this);
 			producer = session.createProducer(destination);
 			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
@@ -78,11 +65,5 @@ public class Chat extends Thread implements MessageListener {
 			e.printStackTrace();
 		}
 	}
-
-	@Override
-	public void onMessage(Message arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 }
