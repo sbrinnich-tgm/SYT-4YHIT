@@ -12,6 +12,15 @@ import javax.jms.Session;
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
+/**
+ * Chat mittels MOM
+ * Ein Chat welcher mittels Apache ActiveMQ Nachrichten verschicken und empfangen kann.
+ * Es gibt Chatrooms und man kann einander private Nachrichten schicken
+ * 
+ * @author niklas hohenwarter
+ * @author selina brinnich
+ * @version 2014-11-19
+ */
 public class Chat {
 
 	private static String user = ActiveMQConnection.DEFAULT_USER;
@@ -21,11 +30,15 @@ public class Chat {
 	
 	private Session session;
 	private Connection connection;
-	private MessageConsumer consumer;
 	private Destination destination;
-	private MessageProducer producer;
+	
+	public MessageConsumer consumer;
+	public MessageProducer producer;
 	
 
+	/**
+	 * 
+	 */
 	public void createConnection() {
 
 		try {
@@ -38,11 +51,13 @@ public class Chat {
 			// Session erstellen
 			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 			
+			// Auf Topic zugreifen
 			destination = session.createTopic(subject);
 
+			// Sender und Empfänger erstellen
 			consumer = session.createConsumer(destination);
 			producer = session.createProducer(destination);
-			producer.setDeliveryMode( DeliveryMode.NON_PERSISTENT );
+			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
 		} catch (Exception e) {
 			e.printStackTrace();
