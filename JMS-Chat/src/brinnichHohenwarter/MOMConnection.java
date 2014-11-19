@@ -23,8 +23,13 @@ public class MOMConnection {
 	private Connection connection;
 	private Destination destination;
 	
-	public MessageConsumer consumer;
-	public MessageProducer producer;
+	private MessageConsumer consumer;
+	private MessageProducer producer;
+	
+	public MOMConnection(String url, String subject){
+		MOMConnection.url = url;
+		MOMConnection.subject = subject;
+	}
 
 	/**
 	 * 
@@ -55,6 +60,9 @@ public class MOMConnection {
 
 	}
 
+	/**
+	 * 
+	 */
 	public void closeConnection() {
 		try {
 			connection.stop();
@@ -64,6 +72,22 @@ public class MOMConnection {
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Gibt ein Nachrichten-Empfaenger Objekt zurueck
+	 * @return ein Nachrichten-Empfaenger Objekt, das auf eine bestimmte Connection registriert ist
+	 */
+	public MessageConsumer getConsumer(){
+		return this.consumer;
+	}
+	
+	/**
+	 * Gibt ein Nachrichten-Sender Objekt zurueck
+	 * @return ein Nachrichten-Sender Objekt, das auf eine bestimmte Connection registriert ist
+	 */
+	public MessageProducer getProducer(){
+		return this.producer;
 	}
 	
 }
