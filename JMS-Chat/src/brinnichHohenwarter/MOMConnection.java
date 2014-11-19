@@ -8,6 +8,7 @@ import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
+import javax.jms.Topic;
 
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -75,16 +76,20 @@ public class MOMConnection {
 			
 			// Auf Topic zugreifen
 			if(isTopic==true){
-				destination = session.createTopic(subject);
+				Topic topic = session.createTopic(subject);
+				// Sender und Empfaenger erstellen
+				consumer = session.createConsumer(topic);
+				producer = session.createProducer(topic);
+				producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 			}else{
 				destination = session.createQueue(subject);
+				consumer = session.createConsumer(destination);
+				producer = session.createProducer(destination);
+				producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 			}
 			
 
-			// Sender und Empfaenger erstellen
-			consumer = session.createConsumer(destination);
-			producer = session.createProducer(destination);
-			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
