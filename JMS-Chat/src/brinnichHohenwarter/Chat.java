@@ -5,7 +5,9 @@ import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
+import javax.jms.Message;
 import javax.jms.MessageConsumer;
+import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 
@@ -21,7 +23,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
  * @author selina brinnich
  * @version 2014-11-19
  */
-public class Chat {
+public class Chat extends Thread implements MessageListener {
 
 	private static String user = ActiveMQConnection.DEFAULT_USER;
 	private static String password = ActiveMQConnection.DEFAULT_PASSWORD;
@@ -32,8 +34,8 @@ public class Chat {
 	private Connection connection;
 	private Destination destination;
 	
-	public MessageConsumer consumer;
-	public MessageProducer producer;
+	private MessageConsumer consumer;
+	private MessageProducer producer;
 	
 
 	/**
@@ -56,6 +58,7 @@ public class Chat {
 
 			// Sender und Empfänger erstellen
 			consumer = session.createConsumer(destination);
+			consumer.setMessageListener(this);
 			producer = session.createProducer(destination);
 			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
@@ -74,6 +77,12 @@ public class Chat {
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void onMessage(Message arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
