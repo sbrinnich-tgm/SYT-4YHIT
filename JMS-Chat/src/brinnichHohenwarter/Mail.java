@@ -1,14 +1,11 @@
 package brinnichHohenwarter;
 
 import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
-public class Mail implements MessageListener{
+public class Mail{
 	
 	private MOMConnection con;
-	private String mails;
 	
 	public Mail(MOMConnection conMail) {
 		con = conMail;
@@ -27,7 +24,9 @@ public class Mail implements MessageListener{
 	}
 
 	public void readMails() {
-		User.printMessage(mails);
+		con.setSubject(User.userip);
+		User.printMessage(getMessages());
+		con.closeConnection();
 	}
 
 	/**
@@ -38,10 +37,28 @@ public class Mail implements MessageListener{
 		return con;
 	}
 
-	@Override
-	public void onMessage(Message msg) {
-		TextMessage text = (TextMessage)msg;
-		mails += text + "\n";
+	private String getMessages(){
+		TextMessage text = null;
+		String mails = "";
+		while(true){
+			
+			try {
+				text = (TextMessage) con.getConsumer().receiveNoWait();
+			} catch (JMSException e) {
+				e.printStackTrace();
+			}
+			if(text != null){
+				try {
+					mails += text.getText() + "\n";
+				} catch (JMSException e) {
+					e.printStackTrace();
+				}
+			}else{
+				break;
+			}
+			
+		}
+		return mails;
 	}
 	
 }
