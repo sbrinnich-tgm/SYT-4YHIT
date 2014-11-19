@@ -81,12 +81,10 @@ public class MOMConnection {
 				// Sender und Empfaenger erstellen
 				consumer = session.createDurableSubscriber(topic, "SUB"+User.username+User.userip);
 				producer = session.createProducer(topic);
-				producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 			}else{
 				destination = session.createQueue(subject);
 				consumer = session.createConsumer(destination);
 				producer = session.createProducer(destination);
-				producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 			}
 			
 
