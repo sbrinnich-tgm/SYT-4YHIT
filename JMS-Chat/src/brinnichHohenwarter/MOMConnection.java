@@ -89,5 +89,13 @@ public class MOMConnection {
 	public MessageProducer getProducer(){
 		return this.producer;
 	}
+
+	/**
+	 * Gibt ein Nachrichten-Session Objekt zurueck
+	 * @return ein Nachrichten-Session Objekt, das auf eine bestimmte Connection registriert ist
+	 */
+	public Session getSession() {
+		return session;
+	}
 	
 }

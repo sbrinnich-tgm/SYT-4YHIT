@@ -31,5 +31,14 @@ public class Chat implements MessageListener{
 			e.printStackTrace();
 		}
 	}
+	
+	public void sendMessage(String text){
+		try {
+			TextMessage msg = con.getSession().createTextMessage(text);
+			con.getProducer().send(msg);
+		} catch (JMSException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
