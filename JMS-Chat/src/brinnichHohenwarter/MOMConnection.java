@@ -12,6 +12,13 @@ import javax.jms.Session;
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
+/**
+ * Erstellt eine Verbindung zu einem Apache ActiveMQ
+ * 
+ * @author niklas hohenwarter
+ * @author selina brinnich
+ * @version 2014-11-19
+ */
 public class MOMConnection {
 	
 	private static String user = ActiveMQConnection.DEFAULT_USER;
@@ -26,13 +33,19 @@ public class MOMConnection {
 	private MessageConsumer consumer;
 	private MessageProducer producer;
 	
+	/**
+	 * Erstellt ein MOM Objekt mit den übergebenen Parametern
+	 * 
+	 * @param url IP des MOM
+	 * @param subject gewüschtest Topic/Queue
+	 */
 	public MOMConnection(String url, String subject){
-		MOMConnection.url = url;
+		MOMConnection.url = "failover://tcp://"+url+":61616";
 		MOMConnection.subject = subject;
 	}
 
 	/**
-	 * 
+	 * Erstellt eine Verbindung zum MOM
 	 */
 	public void createConnection() {
 
@@ -61,7 +74,7 @@ public class MOMConnection {
 	}
 
 	/**
-	 * 
+	 * Schließt die Verbindung und alle dazugehörigen Streams
 	 */
 	public void closeConnection() {
 		try {
@@ -88,6 +101,14 @@ public class MOMConnection {
 	 */
 	public MessageProducer getProducer(){
 		return this.producer;
+	}
+
+	/**
+	 * Gibt ein Nachrichten-Session Objekt zurueck
+	 * @return ein Nachrichten-Session Objekt, das auf eine bestimmte Connection registriert ist
+	 */
+	public Session getSession() {
+		return session;
 	}
 	
 }
