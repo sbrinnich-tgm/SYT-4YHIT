@@ -18,10 +18,9 @@ import java.util.Enumeration;
  */
 public class User extends Thread {
 	
-	private static String username;
+	private String username;
 	
 	private Chat chat;
-	private MOMConnection con;
 	
 	/**
 	 * Erstellt einen User nach den übergebenen Parametern
