@@ -168,7 +168,7 @@ public class MOMConnection {
 		return qsession;
 	}
 	
-	//Test
+	//Tes
 	
 	/**
 	 * Setzt das Subject (Name des Topics/der Queue)
