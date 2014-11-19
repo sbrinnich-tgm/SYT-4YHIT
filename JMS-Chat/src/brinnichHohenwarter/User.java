@@ -24,6 +24,7 @@ public class User extends Thread {
 		this.chatRoom = chatRoom;
 		MOMConnection conChat = new MOMConnection(momIP, chatRoom);
 		chat = new Chat(conChat);
+		this.start();
 	}
 	
 	/**

@@ -42,6 +42,7 @@ public class MOMConnection {
 	public MOMConnection(String url, String subject){
 		MOMConnection.url = "failover://tcp://"+url+":61616";
 		MOMConnection.subject = subject;
+		this.createConnection();
 	}
 
 	/**
