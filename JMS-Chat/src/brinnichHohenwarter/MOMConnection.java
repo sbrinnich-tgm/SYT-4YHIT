@@ -31,7 +31,7 @@ public class MOMConnection {
 	private static String password = ActiveMQConnection.DEFAULT_PASSWORD;
 	private static String url;
 	private static String subject;
-	private static boolean isTopic;
+	private boolean isTopic;
 	
 	private TopicSession tsession;
 	private TopicConnection tconnection;
@@ -56,6 +56,7 @@ public class MOMConnection {
 	public MOMConnection(String url, String subject, boolean isTopic){
 		MOMConnection.url = "failover://tcp://"+url+":61616";
 		MOMConnection.subject = subject;
+		this.isTopic = isTopic;
 		this.createConnection();
 	}
 	
@@ -68,6 +69,8 @@ public class MOMConnection {
 	 */
 	public MOMConnection(String url, boolean isTopic){
 		MOMConnection.url = "failover://tcp://"+url+":61616";
+		this.isTopic = isTopic;
+		this.createConnection();
 	}
 
 	/**
@@ -75,12 +78,12 @@ public class MOMConnection {
 	 */
 	public void createConnection() {
 		
-		if (isTopic == true) {
+		if (isTopic) {
 			TopicConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
 					user, password, url);
 			try {
 				tconnection = connectionFactory.createTopicConnection();
-				tconnection.setClientID(User.username + User.userip+"CHAT");
+//				tconnection.setClientID(User.username + User.userip+"CHAT");
 				tconnection.start();
 
 				tsession = tconnection.createTopicSession(false,
@@ -93,13 +96,14 @@ public class MOMConnection {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			
 		}else{
 			try {
 				// Verbindung herstellen
 				ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
 						user, password, url);
 				qconnection = connectionFactory.createConnection();
-				qconnection.setClientID(User.username+User.userip+"MAIL");
+//				qconnection.setClientID(User.username+User.userip+"MAIL");
 				qconnection.start();
 
 				
@@ -123,13 +127,19 @@ public class MOMConnection {
 	 */
 	public void closeConnection() {
 		try {
-			qconnection.stop();
-			tconnection.stop();
-			consumer.close();
-			qsession.close();
-			tsession.close();
-			qconnection.close();
-			tconnection.close();
+			if(isTopic){
+				subscriber.close();
+				publisher.close();
+				tconnection.stop();
+				tconnection.close();
+				tsession.close();
+			}else{
+				consumer.close();
+				producer.close();
+				qconnection.stop();
+				qconnection.close();
+				qsession.close();
+			}
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
@@ -150,12 +160,28 @@ public class MOMConnection {
 	public MessageProducer getProducer(){
 		return this.producer;
 	}
+	
+	/**
+	 * Gibt ein Nachrichten-Empfaenger Objekt zurueck
+	 * @return ein Nachrichten-Empfaenger Objekt, das auf ein bestimmtes Topic registriert ist
+	 */
+	public TopicSubscriber getSubscriber(){
+		return this.subscriber;
+	}
+	
+	/**
+	 * Gibt ein Nachrichten-Sender Objekt zurueck
+	 * @return ein Nachrichten-Sender Objekt, das auf ein bestimmted Topic registriert ist
+	 */
+	public TopicPublisher getPublisher(){
+		return this.publisher;
+	}
 
 	/**
 	 * Gibt ein Topic-Session Objekt zurueck
 	 * @return ein Topic-Session Objekt, das auf ein bestimmtes Topic registriert ist
 	 */
-	public Session getTopicSession() {
+	public TopicSession getTopicSession() {
 		return tsession;
 	}
 	
@@ -172,6 +198,7 @@ public class MOMConnection {
 	 * @param newSubject der Name des neuen Topics/der neuen Queue
 	 */
 	public void setSubject(String newSubject){
+		this.closeConnection();
 		MOMConnection.subject = newSubject;
 		this.createConnection();
 	}

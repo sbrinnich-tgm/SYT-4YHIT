@@ -31,7 +31,7 @@ public class Chat implements MessageListener{
 	 */
 	private void init(){
 		try {
-			con.getConsumer().setMessageListener(this);
+			con.getSubscriber().setMessageListener(this);
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
@@ -57,7 +57,7 @@ public class Chat implements MessageListener{
 	public void sendMessage(String text){
 		try {
 			TextMessage msg = con.getTopicSession().createTextMessage(text);
-			con.getProducer().send(msg);
+			con.getPublisher().send(msg);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -68,7 +68,7 @@ public class Chat implements MessageListener{
 	 * @return MOM Connection
 	 */
 	 public MOMConnection getConnection() {
-	 return con;
+		 return con;
 	 }
 
 }

@@ -17,7 +17,6 @@ public class Mail{
 			con.setSubject(dest);
 			msg = con.getQueueSession().createTextMessage("Mail from " + User.username + "[" + User.userip + "]: " + text);
 			con.getProducer().send(msg);
-			con.closeConnection();
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
@@ -26,7 +25,6 @@ public class Mail{
 	public void readMails() {
 		con.setSubject(User.userip);
 		User.printMessage(getMessages());
-		con.closeConnection();
 	}
 
 	/**

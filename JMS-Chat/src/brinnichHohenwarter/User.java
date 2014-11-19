@@ -128,8 +128,8 @@ public class User extends Thread {
 	
 	public void exitChat(){
 		System.out.println("Chatroom wird verlassen...");
-		chat.getConnection().closeConnection();
 		mail.getConnection().closeConnection();
+		chat.getConnection().closeConnection();
 		System.exit(0);
 	}
 
