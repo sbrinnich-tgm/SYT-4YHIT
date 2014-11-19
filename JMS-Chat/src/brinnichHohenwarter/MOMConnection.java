@@ -119,4 +119,12 @@ public class MOMConnection {
 		return session;
 	}
 	
+	/**
+	 * Setzt das Subject (Name des Topics/der Queue)
+	 * @param newSubject der Name des neuen Topics/der neuen Queue
+	 */
+	public void setSubject(String newSubject){
+		this.subject = newSubject;
+	}
+	
 }

@@ -18,7 +18,8 @@ import java.util.Enumeration;
  */
 public class User extends Thread {
 	
-	private String username;
+	protected static String username;
+	protected static String userip;
 	
 	private Chat chat;
 
@@ -32,9 +33,10 @@ public class User extends Thread {
 	 */
 	public User(String momIP, String username, String chatRoom) {
 		super("User");
-		this.username = username;
+		username = username;
+		userip = getIp();
 		MOMConnection conChat = new MOMConnection(momIP, chatRoom,true);
-		MOMConnection conMail = new MOMConnection(momIP, getIp(),false);
+		MOMConnection conMail = new MOMConnection(momIP, "0.0.0.0",false);
 		chat = new Chat(conChat);
 		mail = new Mail(conMail);
 		this.start();
@@ -82,8 +84,9 @@ public class User extends Thread {
 			if(msg.equals("EXIT")){
 				System.out.println("Chatroom wird verlassen...");
 				System.exit(0);
-			}else if(msg.equals("MAIL")){
-				mail.sendMail();
+			}else if(msg.contains("MAIL")){
+				String[] s = msg.split(" ");
+				mail.sendMail(s[2], s[1]);
 			}else if(msg.equals("MAILBOX")){
 				mail.readMails();
 			}else{
@@ -116,7 +119,7 @@ public class User extends Thread {
 	 * <code>Benutzername[IP-Adresse]: Nachricht</code>
 	 */
 	private String formatMessage(String msg){
-		return username + " [" + getIp() + "]: " + msg;
+		return username + " [" + userip + "]: " + msg;
 	}
 	
 	/**

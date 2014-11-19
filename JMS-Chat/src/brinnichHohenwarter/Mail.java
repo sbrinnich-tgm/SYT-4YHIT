@@ -11,10 +11,11 @@ public class Mail {
 		con = conMail;
 	}
 
-	public void sendMail(String text) {
+	public void sendMail(String text, String dest) {
 		TextMessage msg;
 		try {
-			msg = con.getSession().createTextMessage(text);
+			con.setSubject(dest);
+			msg = con.getSession().createTextMessage("Mail from " + User.username + "[" + User.userip + "]: " + text);
 			con.getProducer().send(msg);
 		} catch (JMSException e) {
 			e.printStackTrace();
@@ -27,7 +28,7 @@ public class Mail {
 	}
 
 	/**
-	 * Gibt die MOM Connection zurück
+	 * Gibt die MOM Connection zurueck
 	 * @return MOM Connection
 	 */
 	public MOMConnection getConnection() {
