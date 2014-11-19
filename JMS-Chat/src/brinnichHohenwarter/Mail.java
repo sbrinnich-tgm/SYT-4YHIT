@@ -1,14 +1,24 @@
 package brinnichHohenwarter;
 
+import javax.jms.JMSException;
+import javax.jms.TextMessage;
+
 public class Mail {
 	
+	private MOMConnection con;
+	
 	public Mail(MOMConnection conMail) {
-		// TODO Auto-generated constructor stub
+		con = conMail;
 	}
 
-	public void sendMail() {
-		// TODO Auto-generated method stub
-		
+	public void sendMail(String text) {
+		TextMessage msg;
+		try {
+			msg = con.getSession().createTextMessage(text);
+			con.getProducer().send(msg);
+		} catch (JMSException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void readMails() {
