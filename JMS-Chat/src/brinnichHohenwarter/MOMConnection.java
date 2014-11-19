@@ -69,6 +69,7 @@ public class MOMConnection {
 			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
 					user, password, url);
 			connection = connectionFactory.createConnection();
+			connection.setClientID(User.username+User.userip);
 			connection.start();
 
 			// Session erstellen
@@ -78,7 +79,7 @@ public class MOMConnection {
 			if(isTopic==true){
 				Topic topic = session.createTopic(subject);
 				// Sender und Empfaenger erstellen
-				consumer = session.createConsumer(topic);
+				consumer = session.createDurableSubscriber(topic, "SUB"+User.username+User.userip);
 				producer = session.createProducer(topic);
 				producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 			}else{
