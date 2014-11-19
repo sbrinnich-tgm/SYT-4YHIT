@@ -77,12 +77,10 @@ public class User extends Thread {
 	@Override
 	public void run(){
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-		boolean running = true;
 		String msg;
-		while(running){
+		while(true){
 			msg = readLine(bufferRead);
 			if(msg.equals("EXIT")){
-				System.out.println("Chatroom wird verlassen...");
 				exitChat();
 			}else if(msg.equalsIgnoreCase("MAILBOX")){
 				mail.readMails();
@@ -93,8 +91,6 @@ public class User extends Thread {
 				chat.sendMessage(formatMessage(msg));
 			}
 		}
-		chat.getConnection().closeConnection();
-		mail.getConnection().closeConnection();
 	}
 	
 	/**
@@ -131,6 +127,7 @@ public class User extends Thread {
 	}
 	
 	public void exitChat(){
+		System.out.println("Chatroom wird verlassen...");
 		chat.getConnection().closeConnection();
 		mail.getConnection().closeConnection();
 		System.exit(0);
