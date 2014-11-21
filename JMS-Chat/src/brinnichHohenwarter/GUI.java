@@ -45,14 +45,6 @@ public class GUI implements UserInterface, ActionListener{
 		
 		this.mailIP = new JTextField();
 		this.mailMsg = new JTextArea();
-		
-		this.chatInput.addActionListener(this);
-		this.chatSend.addActionListener(this);
-		
-		this.chatInput.setMinimumSize(new Dimension(400,28));
-		this.chatInput.setMaximumSize(new Dimension(400,28));
-		this.chatMsg.setMinimumSize(new Dimension(400,380));
-		this.chatMsg.setMaximumSize(new Dimension(400,380));
 	}
 	
 	private void createConnectFrame(){
@@ -60,6 +52,14 @@ public class GUI implements UserInterface, ActionListener{
 	}
 	
 	private void createChatFrame(){
+		this.chatInput.setMinimumSize(new Dimension(400,28));
+		this.chatInput.setMaximumSize(new Dimension(400,28));
+		this.chatMsg.setMinimumSize(new Dimension(400,380));
+		this.chatMsg.setMaximumSize(new Dimension(400,380));
+
+		this.chatInput.addActionListener(this);
+		this.chatSend.addActionListener(this);
+		
 		chatFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		chatFrame.setSize(400, 400);
 		chatFrame.setResizable(false);
