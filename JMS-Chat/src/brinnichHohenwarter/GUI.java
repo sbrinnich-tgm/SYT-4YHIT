@@ -33,6 +33,8 @@ public class GUI implements UserInterface, ActionListener{
 	private JTextField mailIP;
 	private JTextArea mailText;
 	private JButton mailSend;
+	
+	private JFrame mailReadFrame;
 	private JTextArea mailMsg;
 	private JButton connectCon;
 
@@ -42,13 +44,15 @@ public class GUI implements UserInterface, ActionListener{
 	}
 	
 	private void init(){
+		connectFrame = new JFrame("Connect");
 		chatFrame = new JFrame("Chat");
 		mailSendFrame = new JFrame("Mail to");
-		connectFrame = new JFrame("Connect");
+		mailReadFrame = new JFrame("Mailbox");
 		
 		this.connectIP = new JTextField();
 		this.connectUsername = new JTextField();
 		this.connectChatroom = new JTextField();
+		this.connectCon = new JButton("Connect");
 		
 		this.chatInput = new JTextField();
 		this.chatMsg = new JTextArea();
@@ -57,12 +61,13 @@ public class GUI implements UserInterface, ActionListener{
 		this.mailIP = new JTextField();
 		this.mailText = new JTextArea();
 		this.mailSend = new JButton("Senden");
+		
 		this.mailMsg = new JTextArea();
-		this.connectCon = new JButton("Connect");
 		
 		createConnectFrame();
 		createChatFrame();
 		createMailSendFrame();
+		createMailReadFrame();
 	}
 	
 	private void createConnectFrame(){
@@ -196,6 +201,23 @@ public class GUI implements UserInterface, ActionListener{
 		mailSendFrame.add(mainPanel);
 	}
 	
+	private void createMailReadFrame(){
+		mailReadFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		mailReadFrame.setSize(400, 400);
+		mailReadFrame.setResizable(false);
+		mailReadFrame.setLocationRelativeTo(chatFrame);
+		
+		this.mailMsg.setMinimumSize(new Dimension(400,400));
+		this.mailMsg.setMaximumSize(new Dimension(400,400));
+		
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.LINE_AXIS));
+		mainPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		mainPanel.add(mailMsg);
+		
+		mailReadFrame.add(mainPanel);
+	}
+	
 	private void connect(String momIP, String username, String chatRoom){
 		user = new User(momIP, username, chatRoom, this);
 	}
@@ -217,6 +239,15 @@ public class GUI implements UserInterface, ActionListener{
 				mailSendFrame.setVisible(true);
 				chatInput.setText("");
 			}else if(chatInput.getText().equalsIgnoreCase("/MAILBOX")){
+				String[] mails = user.readMails();
+				String o = "";
+				for(int i = 0; i < mails.length; i++){
+					o += mails[i]+"\n";
+				}
+				mailMsg.setText(o);
+				chatInput.setText("");
+				mailReadFrame.setVisible(true);
+			}else{
 				user.sendMessage(chatInput.getText());
 				chatInput.setText("");
 			}
