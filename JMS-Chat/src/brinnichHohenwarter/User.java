@@ -39,7 +39,7 @@ public class User extends Thread {
 		MOMConnection conMail = new MOMConnection(momIP, false);
 		chat = new Chat(conChat,this);
 		mail = new Mail(conMail);
-		this.start();
+		output("Chatroom wird betreten...");
 	}
 	
 	/**
@@ -71,25 +71,16 @@ public class User extends Thread {
 	    return ipAddress;
 	}
 	
-	/**
-	 * Erledigt staendig anfallende Arbeiten
-	 */
-	@Override
-	public void run(){
-		String msg;
-		output("Chatroom wird betreten...");
-		while(true){
-			msg = userIf.input();
-			if(msg.equals("EXIT")){
-				exitChat();
-			}else if(msg.equalsIgnoreCase("MAILBOX")){
-				output(mail.readMails());
-			}else if(msg.contains("MAIL") || msg.contains("mail")){
-				String[] s = msg.split(" ");
-				mail.sendMail(s[2], s[1]);
-			}else{
-				chat.sendMessage(formatMessage(msg));
-			}
+	public void input(String msg){
+		if(msg.equals("EXIT")){
+			exitChat();
+		}else if(msg.equalsIgnoreCase("MAILBOX")){
+			output(mail.readMails());
+		}else if(msg.contains("MAIL") || msg.contains("mail")){
+			String[] s = msg.split(" ");
+			mail.sendMail(s[2], s[1]);
+		}else{
+			chat.sendMessage(formatMessage(msg));
 		}
 	}
 	
