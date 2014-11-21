@@ -15,14 +15,16 @@ import javax.jms.TextMessage;
 public class Chat implements MessageListener{
 	
 	private MOMConnection con;
+	private User user;
 	
 	/**
 	 * Initialisierung fuer den Chat
 	 * 
 	 * @param con Verbindung zum MOM
 	 */
-	public Chat(MOMConnection con) {
+	public Chat(MOMConnection con, User user) {
 		this.con = con;
+		this.user = user;
 		this.init();
 	}
 	
@@ -44,7 +46,7 @@ public class Chat implements MessageListener{
 	public void onMessage(Message msg) {
 		TextMessage text = (TextMessage)msg;
 		try {
-			User.printMessage(text.getText());
+			user.output(text.getText());
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}

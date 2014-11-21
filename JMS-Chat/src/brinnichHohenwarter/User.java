@@ -18,6 +18,8 @@ import java.util.Enumeration;
  */
 public class User extends Thread {
 	
+	private UserInterface userIf;
+	
 	protected static String username;
 	protected static String userip;
 	
@@ -31,13 +33,14 @@ public class User extends Thread {
 	 * @param username Benutzername im Chat
 	 * @param chatRoom Name des/der Topics/Queue
 	 */
-	public User(String momIP, String username, String chatRoom) {
+	public User(String momIP, String username, String chatRoom, UserInterface userIf) {
 		super("User");
+		this.userIf = userIf;
 		User.username = username;
 		userip = getIp();
 		MOMConnection conChat = new MOMConnection(momIP, chatRoom,true);
 		MOMConnection conMail = new MOMConnection(momIP, false);
-		chat = new Chat(conChat);
+		chat = new Chat(conChat,this);
 		mail = new Mail(conMail);
 		this.start();
 	}
@@ -76,15 +79,14 @@ public class User extends Thread {
 	 */
 	@Override
 	public void run(){
-		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		String msg;
-		System.out.println("Chatroom wird betreten...");
+		output("Chatroom wird betreten...");
 		while(true){
-			msg = readLine(bufferRead);
+			msg = userIf.input();
 			if(msg.equals("EXIT")){
 				exitChat();
 			}else if(msg.equalsIgnoreCase("MAILBOX")){
-				mail.readMails();
+				output(mail.readMails());
 			}else if(msg.contains("MAIL") || msg.contains("mail")){
 				String[] s = msg.split(" ");
 				mail.sendMail(s[2], s[1]);
@@ -94,19 +96,8 @@ public class User extends Thread {
 		}
 	}
 	
-	/**
-	 * Liest eine Zeile von der Konsole ein, sobald der User Enter drueckt
-	 * @param reader ein BufferedReader auf die Konsole
-	 * @return die eingegebene Zeile
-	 */
-	private String readLine(BufferedReader reader){
-		String msg = "";
-		try{
-		    msg = reader.readLine();
-		}catch(IOException e) {
-			e.printStackTrace();
-		}
-		return msg;
+	public void output(String msg){
+		userIf.output(msg);
 	}
 	
 	/**
@@ -119,16 +110,8 @@ public class User extends Thread {
 		return username + " [" + userip + "]: " + msg;
 	}
 	
-	/**
-	 * Gibt eine Nachricht auf der Konsole aus
-	 * @param msg die Nachricht, die ausgegeben wird
-	 */
-	public static void printMessage(String msg){
-		System.out.println(msg);
-	}
-	
 	public void exitChat(){
-		System.out.println("Chatroom wird verlassen...");
+		userIf.output("Chatroom wird verlassen...");
 		mail.getConnection().closeConnection();
 		chat.getConnection().closeConnection();
 		System.exit(0);

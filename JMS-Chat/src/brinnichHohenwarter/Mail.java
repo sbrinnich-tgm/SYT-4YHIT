@@ -22,13 +22,13 @@ public class Mail{
 		}
 	}
 
-	public void readMails() {
+	public String readMails() {
 		con.setSubject(User.userip);
 		String s = getMessages();
 		if(s.equals("")){
-			System.out.println("Keine neuen Mails.");
+			 return "Keine neuen Mails.";
 		}else{
-			User.printMessage(s);
+			return s;
 		}
 	}
 
