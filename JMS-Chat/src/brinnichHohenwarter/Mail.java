@@ -28,19 +28,22 @@ public class Mail{
 		con.setSubject(User.userip);
 		String s = " ";
 		ArrayList<String> mails = new ArrayList<String>();
-		while(!s.equals("")){
+		while(s != null){
 			s = getNextMail();
-			if(!s.equals("")){
+			if(s != null){
 				mails.add(s);
-			}else{
-				mails.add("Keine neuen Mails.");
 			}
 		}
-		String[] m = new String[mails.size()];
-		for(int i = 0; i < mails.size(); i++){
-			m[i] = mails.get(i);
+		
+		if(mails.size()<1){
+			return new String[]{"Keine neuen Mails."};
+		} else {
+			String[] m = new String[mails.size()];
+			for (int i = 0; i < mails.size(); i++) {
+				m[i] = mails.get(i);
+			}
+			return m;
 		}
-		return m;
 	}
 
 	/**
@@ -53,7 +56,7 @@ public class Mail{
 
 	private String getNextMail(){
 		TextMessage text = null;
-		String mail = "";
+		String mail = null;
 
 		try {
 			text = (TextMessage) con.getConsumer().receiveNoWait();
@@ -62,7 +65,7 @@ public class Mail{
 		}
 		if (text != null) {
 			try {
-				mail += text.getText() + "\n";
+				mail = text.getText() + "\n";
 			} catch (JMSException e) {
 				e.printStackTrace();
 			}

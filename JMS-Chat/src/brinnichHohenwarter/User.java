@@ -71,10 +71,6 @@ public class User extends Thread {
 	    return ipAddress;
 	}
 	
-	public void input(String msg){
-		
-	}
-	
 	public String[] readMails(){
 		return mail.readMails();
 	}
