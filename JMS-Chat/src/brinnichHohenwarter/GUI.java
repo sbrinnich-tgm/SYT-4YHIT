@@ -1,11 +1,17 @@
 package brinnichHohenwarter;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class GUI implements UserInterface, ActionListener{
 	
@@ -58,7 +64,9 @@ public class GUI implements UserInterface, ActionListener{
 		this.chatMsg.setMaximumSize(new Dimension(400,380));
 
 		this.chatInput.addActionListener(this);
+		this.chatInput.setActionCommand("chatInput");
 		this.chatSend.addActionListener(this);
+		this.chatSend.setActionCommand("chatSend");
 		
 		chatFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		chatFrame.setSize(400, 400);
@@ -72,17 +80,14 @@ public class GUI implements UserInterface, ActionListener{
 		
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p,BoxLayout.PAGE_AXIS));
-		p.add(Box.createRigidArea(new Dimension(0,10)));
 		p.add(this.chatMsg);
 		p.add(Box.createRigidArea(new Dimension(0,5)));
 		p.add(pSend);
-		p.add(Box.createRigidArea(new Dimension(0,10)));
 		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.LINE_AXIS));
-		mainPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		mainPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		mainPanel.add(p);
-		mainPanel.add(Box.createRigidArea(new Dimension(10,0)));
 		
 		chatFrame.add(mainPanel);
 		
@@ -95,11 +100,6 @@ public class GUI implements UserInterface, ActionListener{
 	
 	private void connect(String momIP, String username, String chatRoom){
 		user = new User(momIP, username, chatRoom, this);
-	}
-
-	@Override
-	public String input() {
-		return null;
 	}
 
 	@Override

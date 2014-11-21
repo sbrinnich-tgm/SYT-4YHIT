@@ -27,7 +27,6 @@ public class CLI extends Thread implements UserInterface{
 	 * @param reader ein BufferedReader auf die Konsole
 	 * @return die eingegebene Zeile
 	 */
-	@Override
 	public String input(){
 		String msg = "";
 		try{
