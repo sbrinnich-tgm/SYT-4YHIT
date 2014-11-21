@@ -66,7 +66,7 @@ public class Chat implements MessageListener{
 	}
 	
 	/**
-	 * Gibt die MOM Connection zurück
+	 * Gibt die MOM Connection zurueck
 	 * @return MOM Connection
 	 */
 	 public MOMConnection getConnection() {
