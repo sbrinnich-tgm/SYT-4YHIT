@@ -2,7 +2,6 @@ package brinnichHohenwarter;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
-import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
@@ -64,7 +63,6 @@ public class MOMConnection {
 	 * Erstellt ein MOM Objekt mit den Uebergebenen Parametern
 	 * 
 	 * @param url IP des MOM
-	 * @param subject gewueschtest Topic/Queue
 	 * @param isTopic gibt an ob die Connection eine Queue oder ein Topic ist
 	 */
 	public MOMConnection(String url, boolean isTopic){
