@@ -72,16 +72,19 @@ public class User extends Thread {
 	}
 	
 	public void input(String msg){
-		if(msg.equals("EXIT")){
-			exitChat();
-		}else if(msg.equalsIgnoreCase("MAILBOX")){
-			output(mail.readMails());
-		}else if(msg.contains("MAIL") || msg.contains("mail")){
-			String[] s = msg.split(" ");
-			mail.sendMail(s[2], s[1]);
-		}else{
-			chat.sendMessage(formatMessage(msg));
-		}
+		
+	}
+	
+	public String[] readMails(){
+		return mail.readMails();
+	}
+	
+	public void sendMail(String msg, String dest){
+		mail.sendMail(msg, dest);
+	}
+	
+	public void sendMessage(String msg){
+		chat.sendMessage(formatMessage(msg));
 	}
 	
 	public void output(String msg){

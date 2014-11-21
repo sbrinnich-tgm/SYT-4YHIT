@@ -1,5 +1,7 @@
 package brinnichHohenwarter;
 
+import java.util.ArrayList;
+
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
 
@@ -22,14 +24,23 @@ public class Mail{
 		}
 	}
 
-	public String readMails() {
+	public String[] readMails() {
 		con.setSubject(User.userip);
-		String s = getMessages();
-		if(s.equals("")){
-			 return "Keine neuen Mails.";
-		}else{
-			return s;
+		String s = " ";
+		ArrayList<String> mails = new ArrayList<String>();
+		while(!s.equals("")){
+			s = getNextMail();
+			if(!s.equals("")){
+				mails.add(s);
+			}else{
+				mails.add("Keine neuen Mails.");
+			}
 		}
+		String[] m = new String[mails.size()];
+		for(int i = 0; i < mails.size(); i++){
+			m[i] = mails.get(i);
+		}
+		return m;
 	}
 
 	/**
@@ -40,28 +51,23 @@ public class Mail{
 		return con;
 	}
 
-	private String getMessages(){
+	private String getNextMail(){
 		TextMessage text = null;
-		String mails = "";
-		while(true){
-			
+		String mail = "";
+
+		try {
+			text = (TextMessage) con.getConsumer().receiveNoWait();
+		} catch (JMSException e) {
+			e.printStackTrace();
+		}
+		if (text != null) {
 			try {
-				text = (TextMessage) con.getConsumer().receiveNoWait();
+				mail += text.getText() + "\n";
 			} catch (JMSException e) {
 				e.printStackTrace();
 			}
-			if(text != null){
-				try {
-					mails += text.getText() + "\n";
-				} catch (JMSException e) {
-					e.printStackTrace();
-				}
-			}else{
-				break;
-			}
-			
 		}
-		return mails;
+		return mail;
 	}
 	
 }

@@ -17,8 +17,24 @@ public class CLI extends Thread implements UserInterface{
 	
 	@Override
 	public void run(){
+		String msg;
 		while(true){
-			user.input(input());
+			msg = input();
+			if(msg.equals("EXIT")){
+				user.exitChat();
+			}else if(msg.equalsIgnoreCase("MAILBOX")){
+				String[] mails = user.readMails();
+				String o = "";
+				for(int i = 0; i < mails.length; i++){
+					o += mails[i]+"\n";
+				}
+				output(o);
+			}else if(msg.contains("MAIL") || msg.contains("mail")){
+				String[] s = msg.split(" ");
+				user.sendMail(s[2], s[1]);
+			}else{
+				user.sendMessage(msg);
+			}
 		}
 	}
 	

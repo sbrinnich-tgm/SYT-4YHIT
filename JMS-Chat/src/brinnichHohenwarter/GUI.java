@@ -29,20 +29,19 @@ public class GUI implements UserInterface, ActionListener{
 	private JTextArea chatMsg;
 	private JButton chatSend;
 	
-	private JFrame mailFrame;
+	private JFrame mailSendFrame;
 	private JTextField mailIP;
 	private JTextArea mailMsg;
 	private JButton connectCon;
 
 	public GUI(){
 		init();
-		createConnectFrame();
-		createChatFrame();
+		connectFrame.setVisible(true);
 	}
 	
 	private void init(){
 		chatFrame = new JFrame("Chat");
-		mailFrame = new JFrame("Mail");
+		mailSendFrame = new JFrame("Mail to");
 		connectFrame = new JFrame("Connect");
 		
 		this.connectIP = new JTextField();
@@ -56,12 +55,17 @@ public class GUI implements UserInterface, ActionListener{
 		this.mailIP = new JTextField();
 		this.mailMsg = new JTextArea();
 		this.connectCon = new JButton("Connect");
+		
+		createConnectFrame();
+		createChatFrame();
+		createMailSendFrame();
 	}
 	
 	private void createConnectFrame(){
 		connectFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		connectFrame.setSize(400,400);
+		connectFrame.setSize(400,180);
 		connectFrame.setResizable(false);
+		connectFrame.setLocationRelativeTo(null);
 		
 		JPanel rootPanel = new JPanel();
 		rootPanel.setLayout(new BoxLayout(rootPanel, BoxLayout.PAGE_AXIS));
@@ -87,23 +91,23 @@ public class GUI implements UserInterface, ActionListener{
 		momPanel.add(connectIP);
 		
 		roomPanel.add(new JLabel("Chatroom:"));
-		roomPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		roomPanel.add(Box.createRigidArea(new Dimension(15,0)));
 		connectChatroom.setMinimumSize(new Dimension(300,28));
 		connectChatroom.setMaximumSize(new Dimension(300,28));
 		roomPanel.add(connectChatroom);
 		
-		userPanel.add(new JLabel("User:"));
-		userPanel.add(Box.createRigidArea(new Dimension(46,0)));
+		userPanel.add(new JLabel("Username:"));
+		userPanel.add(Box.createRigidArea(new Dimension(12,0)));
 		connectUsername.setMinimumSize(new Dimension(300,28));
 		connectUsername.setMaximumSize(new Dimension(300,28));
-		connectUsername.setActionCommand("connect");
-		connectUsername.addActionListener(this);
 		userPanel.add(connectUsername);
 		
 		connectPanel.add(Box.createRigidArea(new Dimension(150,0)));
 		connectPanel.add(connectCon);
 		connectCon.setMinimumSize(new Dimension(100,28));
 		connectCon.setMaximumSize(new Dimension(100,28));
+		connectCon.addActionListener(this);
+		connectCon.setActionCommand("connect");
 		
 		rootPanel.add(momPanel);
 		rootPanel.add(roomPanel);
@@ -112,7 +116,6 @@ public class GUI implements UserInterface, ActionListener{
 		rootPanel.add(connectPanel);
 
 		connectFrame.add(rootPanel);
-		connectFrame.setVisible(true);
 	}
 	
 	private void createChatFrame(){
@@ -129,6 +132,7 @@ public class GUI implements UserInterface, ActionListener{
 		chatFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		chatFrame.setSize(400, 400);
 		chatFrame.setResizable(false);
+		chatFrame.setLocationRelativeTo(null);
 		
 		JPanel pSend = new JPanel();
 		pSend.setLayout(new BoxLayout(pSend,BoxLayout.LINE_AXIS));
@@ -148,12 +152,13 @@ public class GUI implements UserInterface, ActionListener{
 		mainPanel.add(p);
 		
 		chatFrame.add(mainPanel);
-		
-		chatFrame.setVisible(true);
 	}
 	
-	private void createMailFrame(){
-		
+	private void createMailSendFrame(){
+		mailSendFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mailSendFrame.setSize(400, 400);
+		mailSendFrame.setResizable(false);
+		mailSendFrame.setLocationRelativeTo(chatFrame);
 	}
 	
 	private void connect(String momIP, String username, String chatRoom){
@@ -167,7 +172,15 @@ public class GUI implements UserInterface, ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+		String c = e.getActionCommand();
+		if(c.equals("connect")){
+			connect(connectIP.getText(),connectUsername.getText(),connectChatroom.getText());
+			connectFrame.setVisible(false);
+			chatFrame.setVisible(true);
+		}else if(c.equals("chatInput") || c.equals("chatSend")){
+			user.input(chatInput.getText());
+			chatInput.setText("");
+		}
 	}
 	
 }
