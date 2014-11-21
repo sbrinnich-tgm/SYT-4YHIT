@@ -1,8 +1,8 @@
 package brinnichHohenwarter;
 
 
+import java.awt.Component;
 import java.awt.Dimension;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -58,36 +58,51 @@ public class GUI implements UserInterface, ActionListener{
 		
 		JPanel rootPanel = new JPanel();
 		rootPanel.setLayout(new BoxLayout(rootPanel, BoxLayout.PAGE_AXIS));
+		rootPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		
 		JPanel momPanel = new JPanel();
 		JPanel roomPanel = new JPanel();
 		JPanel userPanel = new JPanel();
+		JPanel connectPanel = new JPanel();
 		momPanel.setLayout(new BoxLayout(momPanel,BoxLayout.LINE_AXIS));
+		momPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		roomPanel.setLayout(new BoxLayout(roomPanel,BoxLayout.LINE_AXIS));
+		roomPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		userPanel.setLayout(new BoxLayout(userPanel,BoxLayout.LINE_AXIS));
+		userPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		connectPanel.setLayout(new BoxLayout(connectPanel,BoxLayout.LINE_AXIS));
+		connectPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		momPanel.add(new JLabel("Server:"));
-		momPanel.add(Box.createRigidArea(new Dimension(20,0)));
+		momPanel.add(Box.createRigidArea(new Dimension(33,0)));
 		connectIP.setMinimumSize(new Dimension(300,28));
 		connectIP.setMaximumSize(new Dimension(300,28));
 		momPanel.add(connectIP);
-
 		
 		roomPanel.add(new JLabel("Chatroom:"));
-		roomPanel.add(Box.createRigidArea(new Dimension(20,0)));
+		roomPanel.add(Box.createRigidArea(new Dimension(10,0)));
 		connectChatroom.setMinimumSize(new Dimension(300,28));
 		connectChatroom.setMaximumSize(new Dimension(300,28));
 		roomPanel.add(connectChatroom);
 		
 		userPanel.add(new JLabel("User:"));
-		userPanel.add(Box.createRigidArea(new Dimension(20,0)));
+		userPanel.add(Box.createRigidArea(new Dimension(46,0)));
 		connectUsername.setMinimumSize(new Dimension(300,28));
 		connectUsername.setMaximumSize(new Dimension(300,28));
+		connectUsername.setActionCommand("connect");
+		connectUsername.addActionListener(this);
 		userPanel.add(connectUsername);
+		
+		connectPanel.add(Box.createRigidArea(new Dimension(150,0)));
+		connectPanel.add(connectCon);
+		connectCon.setMinimumSize(new Dimension(100,28));
+		connectCon.setMaximumSize(new Dimension(100,28));
 		
 		rootPanel.add(momPanel);
 		rootPanel.add(roomPanel);
 		rootPanel.add(userPanel);
-		rootPanel.add(connectCon);
+		rootPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		rootPanel.add(connectPanel);
 
 		connectFrame.add(rootPanel);
 		connectFrame.setVisible(true);
