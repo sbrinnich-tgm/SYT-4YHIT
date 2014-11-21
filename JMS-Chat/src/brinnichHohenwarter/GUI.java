@@ -9,6 +9,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -30,9 +31,11 @@ public class GUI implements UserInterface, ActionListener{
 	private JFrame mailFrame;
 	private JTextField mailIP;
 	private JTextArea mailMsg;
+	private JButton connectCon;
 
 	public GUI(){
 		init();
+		createConnectFrame();
 		createChatFrame();
 	}
 	
@@ -51,10 +54,49 @@ public class GUI implements UserInterface, ActionListener{
 		
 		this.mailIP = new JTextField();
 		this.mailMsg = new JTextArea();
+		this.connectCon = new JButton("Connect");
 	}
 	
 	private void createConnectFrame(){
+		connectFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		connectFrame.setSize(400,400);
+		connectFrame.setResizable(false);
 		
+		JPanel rootPanel = new JPanel();
+		rootPanel.setLayout(new BoxLayout(rootPanel, BoxLayout.PAGE_AXIS));
+		JPanel momPanel = new JPanel();
+		JPanel roomPanel = new JPanel();
+		JPanel userPanel = new JPanel();
+		momPanel.setLayout(new BoxLayout(momPanel,BoxLayout.LINE_AXIS));
+		roomPanel.setLayout(new BoxLayout(roomPanel,BoxLayout.LINE_AXIS));
+		userPanel.setLayout(new BoxLayout(userPanel,BoxLayout.LINE_AXIS));
+		
+		momPanel.add(new JLabel("Server:"));
+		momPanel.add(Box.createRigidArea(new Dimension(20,0)));
+		connectIP.setMinimumSize(new Dimension(300,28));
+		connectIP.setMaximumSize(new Dimension(300,28));
+		momPanel.add(connectIP);
+
+		
+		roomPanel.add(new JLabel("Chatroom:"));
+		roomPanel.add(Box.createRigidArea(new Dimension(20,0)));
+		connectChatroom.setMinimumSize(new Dimension(300,28));
+		connectChatroom.setMaximumSize(new Dimension(300,28));
+		roomPanel.add(connectChatroom);
+		
+		userPanel.add(new JLabel("User:"));
+		userPanel.add(Box.createRigidArea(new Dimension(20,0)));
+		connectUsername.setMinimumSize(new Dimension(300,28));
+		connectUsername.setMaximumSize(new Dimension(300,28));
+		userPanel.add(connectUsername);
+		
+		rootPanel.add(momPanel);
+		rootPanel.add(roomPanel);
+		rootPanel.add(userPanel);
+		rootPanel.add(connectCon);
+
+		connectFrame.add(rootPanel);
+		connectFrame.setVisible(true);
 	}
 	
 	private void createChatFrame(){
