@@ -4,12 +4,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class CLI implements UserInterface{
+public class CLI extends Thread implements UserInterface{
 	
 	BufferedReader bufferedReader;
+	User user;
 
-	public CLI(){
+	public CLI(String momIP, String username, String chatRoom){
 		this.bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+		user = new User(momIP, username, chatRoom, this);
+		this.start();
+	}
+	
+	@Override
+	public void run(){
+		while(true){
+			user.input(input());
+		}
 	}
 	
 	/**
