@@ -3,9 +3,9 @@ package brinnichHohenwarter;
 /**
  * Startet den Chat
  * 
- * @author niklas hohenwarter
- * @author selina brinnich
- * @version 2014-11-19
+ * @author Niklas Hohenwarter
+ * @author Selina Brinnich
+ * @version 2014-11-22
  */
 public class Main {
 	public static void main(String[] args) {

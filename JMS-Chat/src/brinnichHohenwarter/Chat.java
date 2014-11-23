@@ -9,8 +9,9 @@ import javax.jms.TextMessage;
  * Implementiert die Funktionen eines Chatrooms
  * User koennen Nachrichten versenden und empfangen
  * 
- * @author niklas hohenwarter
- * @author selina brinnich
+ * @author Niklas Hohenwarter
+ * @author Selina Brinnich
+ * @version 2014-11-20
  */
 public class Chat implements MessageListener{
 	

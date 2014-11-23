@@ -9,9 +9,9 @@ import java.util.Enumeration;
 /**
  * Repraesentiert den User eines Chats
  * 
- * @author niklas hohenwarter
- * @author selina brinnich
- * @version 2014-11-19
+ * @author Niklas Hohenwarter
+ * @author Selina Brinnich
+ * @version 2014-11-23
  */
 public class User extends Thread {
 	
@@ -40,6 +40,7 @@ public class User extends Thread {
 		chat = new Chat(conChat,this);
 		mail = new Mail(conMail);
 		output("Chatroom wird betreten...");
+		output("init");
 	}
 	
 	/**
@@ -71,18 +72,35 @@ public class User extends Thread {
 	    return ipAddress;
 	}
 	
+	/**
+	 * Gibt alle empfangenen Mail zurueck
+	 * @return alle empfangenen Mails einzeln in einem String-Array
+	 */
 	public String[] readMails(){
 		return mail.readMails();
 	}
 	
+	/**
+	 * Sendet eine Mail an die MOM
+	 * @param msg die Nachricht die gesendet werden soll
+	 * @param dest die IP des Users, an den die Nachricht gesendet werden soll
+	 */
 	public void sendMail(String msg, String dest){
 		mail.sendMail(msg, dest);
 	}
 	
+	/**
+	 * Sendet eine Chatnachricht an die MOM
+	 * @param msg die Nachricht, die gesendet werden soll
+	 */
 	public void sendMessage(String msg){
 		chat.sendMessage(formatMessage(msg));
 	}
 	
+	/**
+	 * Gibt eine Output-Nachricht an das entsprechende UserInterface weiter
+	 * @param msg
+	 */
 	public void output(String msg){
 		userIf.output(msg);
 	}
@@ -97,6 +115,9 @@ public class User extends Thread {
 		return username + " [" + userip + "]: " + msg;
 	}
 	
+	/**
+	 * Schliesst die Verbindung zur MOM und beendet das Programm
+	 */
 	public void exitChat(){
 		userIf.output("Chatroom wird verlassen...");
 		mail.getConnection().closeConnection();

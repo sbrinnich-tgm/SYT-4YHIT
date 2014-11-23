@@ -5,14 +5,30 @@ import java.util.ArrayList;
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
 
+/**
+ * Klasse zum Senden und Empfangen von Mails
+ * @author Selina Brinnich
+ * @author Niklas Hohenwarter
+ * @version 2014-11-23
+ *
+ */
 public class Mail{
 	
 	private MOMConnection con;
 	
+	/**
+	 * Initialisiert
+	 * @param conMail eine Connection zu einer MOM-Queue
+	 */
 	public Mail(MOMConnection conMail) {
 		con = conMail;
 	}
 
+	/**
+	 * Sendet eine Mail an einen bestimmten User
+	 * @param text der Nachrichten-Text der Mail
+	 * @param dest die IP des Empfaengers
+	 */
 	public void sendMail(String text, String dest) {
 		TextMessage msg;
 		try {
@@ -24,6 +40,10 @@ public class Mail{
 		}
 	}
 
+	/**
+	 * Liest alle empfangenen Mails des Users aus
+	 * @return alle empfangenen Mails getrennt in einem String-Array
+	 */
 	public String[] readMails() {
 		con.setSubject(User.userip);
 		String s = " ";

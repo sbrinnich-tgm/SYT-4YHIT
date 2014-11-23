@@ -20,9 +20,9 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 /**
  * Erstellt eine Verbindung zu einem Apache ActiveMQ
  * 
- * @author niklas hohenwarter
- * @author selina brinnich
- * @version 2014-11-19
+ * @author Niklas Hohenwarter
+ * @author Selina Brinnich
+ * @version 2014-11-23
  */
 public class MOMConnection {
 	
@@ -77,9 +77,10 @@ public class MOMConnection {
 	public void createConnection() {
 		
 		if (isTopic) {
-			TopicConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-					user, password, url);
 			try {
+				TopicConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
+					user, password, url);
+			
 				tconnection = connectionFactory.createTopicConnection();
 //				tconnection.setClientID(User.username + User.userip+"CHAT");
 				tconnection.start();
@@ -190,8 +191,6 @@ public class MOMConnection {
 	public Session getQueueSession() {
 		return qsession;
 	}
-	
-	//Test
 	
 	/**
 	 * Setzt das Subject (Name des Topics/der Queue)

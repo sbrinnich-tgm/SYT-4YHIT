@@ -15,6 +15,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+/**
+ * Eine GUI zur Darstellung von Chatnachrichten und Mails
+ * @author Selina Brinnich
+ * @author Niklas Hohenwarter
+ * @version 2014-11-23
+ *
+ */
 public class GUI implements UserInterface, ActionListener{
 	
 	private User user;
@@ -38,11 +45,17 @@ public class GUI implements UserInterface, ActionListener{
 	private JTextArea mailMsg;
 	private JButton connectCon;
 
+	/**
+	 * Initialisiert die GUI und zeigt ein Verbindungs-Frame an
+	 */
 	public GUI(){
 		init();
 		connectFrame.setVisible(true);
 	}
 	
+	/**
+	 * Initialisiert alle Attribute und erzeugt alle Frames
+	 */
 	private void init(){
 		connectFrame = new JFrame("Connect");
 		chatFrame = new JFrame("Chat");
@@ -70,6 +83,9 @@ public class GUI implements UserInterface, ActionListener{
 		createMailReadFrame();
 	}
 	
+	/**
+	 * Erzeugt ein Frame, in dem man sich zu einer MOM bzw. zu einem Chatroom verbinden kann
+	 */
 	private void createConnectFrame(){
 		connectFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		connectFrame.setSize(400,180);
@@ -127,6 +143,9 @@ public class GUI implements UserInterface, ActionListener{
 		connectFrame.add(rootPanel);
 	}
 	
+	/**
+	 * Erzeugt ein Frame, in dem Chatnachrichten angezeigt und gesendet werden koennen
+	 */
 	private void createChatFrame(){
 		this.chatInput.setMinimumSize(new Dimension(400,28));
 		this.chatInput.setMaximumSize(new Dimension(400,28));
@@ -165,6 +184,9 @@ public class GUI implements UserInterface, ActionListener{
 		chatFrame.add(mainPanel);
 	}
 	
+	/**
+	 * Erzeugt ein Frame, in dem man eine Mail schicken kann
+	 */
 	private void createMailSendFrame(){
 		mailSendFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		mailSendFrame.setSize(400, 400);
@@ -201,6 +223,9 @@ public class GUI implements UserInterface, ActionListener{
 		mailSendFrame.add(mainPanel);
 	}
 	
+	/**
+	 * Erzeugt ein Frame, in dem man seine Mails lesen kann
+	 */
 	private void createMailReadFrame(){
 		mailReadFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		mailReadFrame.setSize(400, 400);
@@ -218,13 +243,27 @@ public class GUI implements UserInterface, ActionListener{
 		mailReadFrame.add(mainPanel);
 	}
 	
+	/**
+	 * Stellt die Verbindung zur MOM her
+	 * @param momIP IP der MOM
+	 * @param username Username, den der User im Chat verwenden moechte
+	 * @param chatRoom Chatroom, in den der User beitreten moechte
+	 */
 	private void connect(String momIP, String username, String chatRoom){
 		user = new User(momIP, username, chatRoom, this);
 	}
 
+	/**
+	 * Gibt neue Chatnachrichten im Chatframe aus
+	 */
 	@Override
 	public void output(String msg) {
-		chatMsg.setText(chatMsg.getText()+"\n"+msg);
+		if(msg.equals("init")){
+			output("Um deine Mails zu lesen gib bitte /mailbox ein.");
+			output("Um eine Mail zu senden gib /mail ein.");
+		}else{
+			chatMsg.setText(chatMsg.getText()+"\n"+msg);
+		}
 	}
 
 	@Override
@@ -252,7 +291,10 @@ public class GUI implements UserInterface, ActionListener{
 				chatInput.setText("");
 			}
 		}else if(c.equals("mailSend")){
-			user.sendMail(mailMsg.getText(), mailIP.getText());
+			user.sendMail(mailText.getText(), mailIP.getText());
+			mailText.setText("");
+			mailIP.setText("");
+			mailSendFrame.setVisible(false);
 		}
 	}
 	
